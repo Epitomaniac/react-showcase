@@ -15,7 +15,7 @@ const content = {
     mainProjectDesc: `ChessCanon is my largest project, a comprehensive platform for learning and practicing different aspects of chess. The entire project was designed and developed by me from start to finish over the course of approximately two years.
 The system is split into three separate codebases: the main website, the chessboard module and its underlying logic, and a desktop application to automatically find puzzles. ChessCanon is a full-stack web application featuring a complete backend and api system, relational databases, an active user community, and server-side security considerations.
 `,
-    mockTitle: "Mock Projects",
+    mockTitle: "Mock Projects (React skills showcase)",
     contact: "Contact",
   },
   fa: {
@@ -29,7 +29,7 @@ The system is split into three separate codebases: the main website, the chessbo
 چسکنن از سه کدبیس مجزا تشکیل می‌شود: وب‌سایت اصلی، ماژول صفحه شطرنج و لاجیک مربوط به آن، و یک نرم‌افزار دسکتاپ برای جستجو و یافتن خودکار پازل ها. این پروژه یک وب‌اپلیکیشن کامل با بک اند و api اختصاصی، دیتابیس‌های ریلیشنال، جامعه‌ی کاربری پویا و ملاحظات امنیتی در سطح سرور است.
 
       `,
-    mockTitle: "پروژه‌های نمایشی",
+    mockTitle: "پروژه های ماکت (نمایش مهارت های React)",
     contact: "تماس",
   },
 } as const;
@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <main
       dir={t.dir}
-      className={`min-h-screen p-6 transition-colors ${fontClass} ${
+      className={`min-h-screen p-6 ${fontClass} ${
         isDark
           ? "bg-neutral-950 text-neutral-100"
           : "bg-neutral-50 text-neutral-900"
@@ -56,10 +56,10 @@ export default function Home() {
         <div className="flex justify-end gap-2">
           <button
             onClick={() => setLang(lang === "en" ? "fa" : "en")}
-            className={`text-sm cursor-pointer px-3 py-1 border rounded transition ${
+            className={`text-sm cursor-pointer px-3 py-1 border rounded ${
               isDark
                 ? "border-neutral-700 hover:border-neutral-300"
-                : "border-neutral-300 hover:border-neutral-300"
+                : "border-neutral-300 hover:border-neutral-700"
             }`}
           >
             {lang === "en" ? "فارسی" : "English"}
@@ -67,10 +67,10 @@ export default function Home() {
 
           <button
             onClick={() => setTheme(isDark ? "light" : "dark")}
-            className={`text-2xl cursor-pointer px-3 py-1 border rounded transition ${
+            className={`text-2xl cursor-pointer px-3 py-1 border rounded ${
               isDark
                 ? "border-neutral-700 hover:border-neutral-300"
-                : "border-neutral-300 hover:border-neutral-300"
+                : "border-neutral-300 hover:border-neutral-700"
             }`}
           >
             {isDark ? "☀︎" : "☾"}
@@ -91,7 +91,7 @@ export default function Home() {
 
         {/* Main project */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-2xl font-semibold ">
             <a
               href="https://chesscanon.com"
               target="_blank"
@@ -113,7 +113,14 @@ export default function Home() {
                 isDark ? "text-neutral-300" : "text-neutral-700"
               }`}
             >
-              {t.mainProjectDesc}
+              {t.mainProjectDesc}{" "}
+              <a
+                href="https://chesscanon.com"
+                target="_blank"
+                className="mx-5 decoration-0 cursor-pointer text-blue-400"
+              >
+                {lang === "en" ? "Visit ChessCanon" : "بازدید از چسکنن"}
+              </a>
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
@@ -146,6 +153,7 @@ export default function Home() {
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <MockProject
+              link="/movie-explorer"
               title="Movie Explorer"
               desc={
                 lang === "en"
@@ -155,20 +163,12 @@ export default function Home() {
               dark={isDark}
             />
             <MockProject
-              title="Todo Variants"
+              link="/todo-list"
+              title="Todo App with Advanced Features"
               desc={
                 lang === "en"
                   ? "Multiple approaches to the same UI problem."
                   : "چند رویکرد مختلف برای یک مسئله رابط کاربری."
-              }
-              dark={isDark}
-            />
-            <MockProject
-              title="Infinite List"
-              desc={
-                lang === "en"
-                  ? "Focus on performance and memoization."
-                  : "تمرکز بر کارایی و memoization."
               }
               dark={isDark}
             />
@@ -197,20 +197,24 @@ export default function Home() {
 }
 
 function MockProject({
+  link,
   title,
   desc,
   dark,
 }: {
+  link: string;
   title: string;
   desc: string;
   dark: boolean;
 }) {
   return (
-    <div
-      className={`rounded-lg p-5 border transition ${
+    <a
+      href={link}
+      target="_blank"
+      className={`block rounded-lg p-5 border cursor-pointer ${
         dark
           ? "border-neutral-800 hover:border-neutral-600"
-          : "border-neutral-200 hover:border-neutral-400 bg-white"
+          : "border-neutral-300 hover:border-neutral-400"
       }`}
     >
       <h3 className="font-medium">{title}</h3>
@@ -221,6 +225,6 @@ function MockProject({
       >
         {desc}
       </p>
-    </div>
+    </a>
   );
 }
