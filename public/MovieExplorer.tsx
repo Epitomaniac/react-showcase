@@ -1,7 +1,5 @@
-"use client";
 import { useState, useEffect, useRef, useMemo, memo } from "react";
 import Image from "next/image";
-import ShikiHighlighter from "react-shiki";
 
 interface Movie {
   imdbId: string;
@@ -122,14 +120,12 @@ const MovieItem = memo(function MovieItem({
   return (
     <div className="group rounded-lg bg-white shadow ">
       <div className="relative aspect-2/3 overflow-hidden rounded-t-lg">
-        {/* Star icon */}
         <button
           onClick={handleFavorite}
           className={`z-10 cursor-pointer absolute top-2 left-2 transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg ${
             isFavorite ? "text-yellow-400" : "text-gray-400"
           } group-hover:scale-125`}
         >
-          {/* You can use any star icon, e.g., from Heroicons */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
@@ -146,7 +142,6 @@ const MovieItem = memo(function MovieItem({
           </svg>
         </button>
 
-        {/* Poster image */}
         <Image
           src={movie.poster}
           alt={movie.title}
@@ -186,23 +181,6 @@ export default function MovieList() {
   const [favorites, setFavorites] = usePersistFavorites();
   const [activeTab, setActiveTab] = useState<Tab>("all");
   const [movieList, isLoading] = useFetchMovieData(debouncedSearch);
-  const [html, setHtml] = useState<string>("");
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        // fetch works in the browser only
-        const response = await fetch("/MovieExplorer.tsx");
-        if (!response.ok) throw new Error(`HTTP error! ${response.status}`);
-        const code = await response.text();
-        setHtml(code);
-      } catch (err) {
-        console.error("Failed to fetch or highlight code:", err);
-      }
-    };
-
-    load();
-  }, []);
 
   // Intentionally exclude `favorites` from the dependency array so items don't
   // disappear immediately when unfavorited from the Favorites tab (UX safeguard)
@@ -226,59 +204,53 @@ export default function MovieList() {
   }, [search]);
 
   return (
-    <>
-      <div className="min-h-screen bg-gray-100 p-10">
-        <div className="flex max-w-full mx-auto mb-8 gap-2">
-          <input
-            type="text"
-            value={search}
-            onChange={handleSearch}
-            placeholder="Search movies..."
-            className="flex-1 rounded-md border border-gray-300 p-3 text-lg shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          />
-          <button
-            onClick={() => setActiveTab("all")}
-            className={`border cursor-pointer rounded-md w-24 py-3 text-md font-medium ${
-              activeTab === "all"
-                ? "bg-amber-50 border-amber-300"
-                : "bg-gray-200 border-gray-300"
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setActiveTab("favorites")}
-            className={`border cursor-pointer rounded-md w-24 py-3 text-md font-medium ${
-              activeTab === "favorites"
-                ? "bg-amber-50 border-amber-300"
-                : "bg-gray-200 border-gray-300"
-            }`}
-          >
-            Favorites
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {isLoading
-            ? Array.from({ length: 10 }).map((_, index) => (
-                <LoadingItem key={index} />
-              ))
-            : currentList.map(movie => (
-                <MovieItem
-                  key={movie.imdbId}
-                  movie={movie}
-                  isFavorite={favorites.some(
-                    (item: Movie) => item.imdbId === movie.imdbId
-                  )}
-                  setFavorites={setFavorites}
-                />
-              ))}
-        </div>
+    <div className="min-h-screen bg-gray-100 p-10">
+      <div className="flex max-w-full mx-auto mb-8 gap-2">
+        <input
+          type="text"
+          value={search}
+          onChange={handleSearch}
+          placeholder="Search movies..."
+          className="flex-1 rounded-md border border-gray-300 p-3 text-lg shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        />
+        <button
+          onClick={() => setActiveTab("all")}
+          className={`border cursor-pointer rounded-md w-24 py-3 text-md font-medium ${
+            activeTab === "all"
+              ? "bg-amber-50 border-amber-300"
+              : "bg-gray-200 border-gray-300"
+          }`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setActiveTab("favorites")}
+          className={`border cursor-pointer rounded-md w-24 py-3 text-md font-medium ${
+            activeTab === "favorites"
+              ? "bg-amber-50 border-amber-300"
+              : "bg-gray-200 border-gray-300"
+          }`}
+        >
+          Favorites
+        </button>
       </div>
 
-      <ShikiHighlighter language="tsx" theme="github-dark">
-        {html}
-      </ShikiHighlighter>
-    </>
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {isLoading
+          ? Array.from({ length: 10 }).map((_, index) => (
+              <LoadingItem key={index} />
+            ))
+          : currentList.map(movie => (
+              <MovieItem
+                key={movie.imdbId}
+                movie={movie}
+                isFavorite={favorites.some(
+                  (item: Movie) => item.imdbId === movie.imdbId
+                )}
+                setFavorites={setFavorites}
+              />
+            ))}
+      </div>
+    </div>
   );
 }

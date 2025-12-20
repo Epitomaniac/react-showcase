@@ -1,4 +1,3 @@
-"use client";
 import {
   useState,
   useEffect,
@@ -8,7 +7,6 @@ import {
   useCallback,
   memo,
 } from "react";
-import ShikiHighlighter from "react-shiki";
 
 interface Todo {
   id: string;
@@ -149,23 +147,6 @@ export default function TodoApp() {
   const [currentTab, setCurrentTab] = useState<Tab>("all");
   const [isMounted, setIsMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [html, setHtml] = useState<string>("");
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        // fetch works in the browser only
-        const response = await fetch("/TodoList.tsx");
-        if (!response.ok) throw new Error(`HTTP error! ${response.status}`);
-        const code = await response.text();
-        setHtml(code);
-      } catch (err) {
-        console.error("Failed to fetch or highlight code:", err);
-      }
-    };
-
-    load();
-  }, []);
 
   const currentTodos = useMemo(() => {
     const filtered = todos.filter(todo =>
@@ -190,62 +171,57 @@ export default function TodoApp() {
   if (!isMounted) return null;
 
   return (
-    <>
-      <div className="mx-auto mt-12 mb-20 max-w-md rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <h1 className="mb-4 text-lg font-semibold text-neutral-800 ">
-          Todo List
-        </h1>
+    <div className="mx-auto mt-12 max-w-md rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+      <h1 className="mb-4 text-lg font-semibold text-neutral-800 ">
+        Todo List
+      </h1>
 
-        <div className="mb-5 flex gap-2">
-          <input
-            ref={inputRef}
-            value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && addTodo()}
-            placeholder="Add a new task"
-            className="flex-1 rounded-lg border border-neutral-300 bg-transparent px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-          />
-          <button
-            onClick={addTodo}
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500 active:scale-[0.98]"
-          >
-            Add
-          </button>
-        </div>
-
-        <div className="mb-4 flex gap-1 rounded-lg bg-neutral-100 p-1 ">
-          {(["all", "active", "completed"] as Tab[]).map(tab => (
-            <button
-              key={tab}
-              onClick={() => setCurrentTab(tab)}
-              className={`flex-1 cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                currentTab === tab
-                  ? "bg-white text-blue-600 shadow-sm "
-                  : "text-neutral-500 hover:text-neutral-800 "
-              }`}
-            >
-              {tab[0].toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
-        </div>
-
-        <ul>
-          {currentTodos.map(todo => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              onToggle={id => dispatch({ type: "completed", payload: { id } })}
-              onDelete={id => dispatch({ type: "deleted", payload: { id } })}
-              onEdit={(id, title) =>
-                dispatch({ type: "edited", payload: { id, title } })
-              }
-            />
-          ))}
-        </ul>
+      <div className="mb-5 flex gap-2">
+        <input
+          ref={inputRef}
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && addTodo()}
+          placeholder="Add a new task"
+          className="flex-1 rounded-lg border border-neutral-300 bg-transparent px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+        />
+        <button
+          onClick={addTodo}
+          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-500 active:scale-[0.98]"
+        >
+          Add
+        </button>
       </div>
-      <ShikiHighlighter language="tsx" theme="github-dark">
-        {html}
-      </ShikiHighlighter>
-    </>
+
+      <div className="mb-4 flex gap-1 rounded-lg bg-neutral-100 p-1 ">
+        {(["all", "active", "completed"] as Tab[]).map(tab => (
+          <button
+            key={tab}
+            onClick={() => setCurrentTab(tab)}
+            className={`flex-1 cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition ${
+              currentTab === tab
+                ? "bg-white text-blue-600 shadow-sm "
+                : "text-neutral-500 hover:text-neutral-800 "
+            }`}
+          >
+            {tab[0].toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      <ul>
+        {currentTodos.map(todo => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggle={id => dispatch({ type: "completed", payload: { id } })}
+            onDelete={id => dispatch({ type: "deleted", payload: { id } })}
+            onEdit={(id, title) =>
+              dispatch({ type: "edited", payload: { id, title } })
+            }
+          />
+        ))}
+      </ul>
+    </div>
   );
 }

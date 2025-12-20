@@ -15,7 +15,7 @@ const content = {
     mainProjectDesc: `ChessCanon is my largest project, a comprehensive platform for learning and practicing different aspects of chess. The entire project was designed and developed by me from start to finish over the course of approximately two years.
 The system is split into three separate codebases: the main website, the chessboard module and its underlying logic, and a desktop application to automatically find puzzles. ChessCanon is a full-stack web application featuring a complete backend and api system, relational databases, an active user community, and server-side security considerations.
 `,
-    mockTitle: "Mock Projects (React skills showcase)",
+    mockTitle: "Mock Projects (React Skills Showcase)",
     contact: "Contact",
   },
   fa: {
@@ -155,21 +155,28 @@ export default function Home() {
             <MockProject
               link="/movie-explorer"
               title="Movie Explorer"
-              desc={
-                lang === "en"
-                  ? "Demonstrates state management, filtering, and effects."
-                  : "نمایش مدیریت state، فیلتر کردن و effectها."
-              }
+              desc={[
+                "Data Fetching",
+                "Managing Race Conditions",
+                "Custom Hooks",
+                "Debouncing Inputs",
+                "Derived State",
+                "LocalStorage Persist",
+                "Memoization with useMemo and memo",
+              ]}
               dark={isDark}
             />
             <MockProject
               link="/todo-list"
               title="Todo App with Advanced Features"
-              desc={
-                lang === "en"
-                  ? "Multiple approaches to the same UI problem."
-                  : "چند رویکرد مختلف برای یک مسئله رابط کاربری."
-              }
+              desc={[
+                "Reducers",
+                "Custom Hooks",
+                "Derived State",
+                "LocalStorage Persist",
+                "Memoization with useMemo and useCallback",
+                "DOM Manipulation with Refs",
+              ]}
               dark={isDark}
             />
           </div>
@@ -204,11 +211,12 @@ function MockProject({
 }: {
   link: string;
   title: string;
-  desc: string;
+  desc: string[];
   dark: boolean;
 }) {
   return (
     <a
+      dir="ltr"
       href={link}
       target="_blank"
       className={`block rounded-lg p-5 border cursor-pointer ${
@@ -218,13 +226,17 @@ function MockProject({
       }`}
     >
       <h3 className="font-medium">{title}</h3>
-      <p
-        className={`text-sm mt-2 ${
+      <ul
+        className={`text-sm mt-2  px-5 ${
           dark ? "text-neutral-400" : "text-neutral-600"
         }`}
       >
-        {desc}
-      </p>
+        {desc.map(des => (
+          <li className="list-disc" key={des}>
+            {des}
+          </li>
+        ))}
+      </ul>
     </a>
   );
 }
