@@ -52,6 +52,7 @@ function useUser(userId: string) {
   const requestIdRef = useRef(0);
 
   useEffect(() => {
+    setStatus("loading");
     const cached = localStorage.getItem(userId);
     if (cached) {
       setUser(JSON.parse(cached));
@@ -104,7 +105,7 @@ function useUser(userId: string) {
 function UserCard({ userId }: { userId: string }) {
   const { user, status, refresh } = useUser(userId);
 
-  if (!user && status === "loading") {
+  if (status === "loading") {
     return <p className="m-4 animate-pulse">Loading user…</p>;
   }
 
@@ -119,27 +120,29 @@ function UserCard({ userId }: { userId: string }) {
     );
   }
 
-  if (!user) return null;
-
   return (
     <div
       className={`m-4 space-y-1 transition-opacity ${
         status === "refreshing" ? "opacity-60" : "opacity-100"
       }`}
     >
-      <div className="font-medium">{user.name}</div>
-      <div className="text-sm text-gray-600">{user.email}</div>
+      <div className="font-medium">{user?.name}</div>
+      <div className="text-sm text-gray-600">{user?.email}</div>
       <div className="text-xs text-gray-500">
-        Last updated: {new Date(user.updatedAt).toLocaleTimeString()}
+        {user
+          ? "Last updated: " + new Date(user.updatedAt).toLocaleTimeString()
+          : ""}
       </div>
 
-      <button
-        onClick={refresh}
-        disabled={status === "refreshing"}
-        className="mt-2 rounded border px-3 py-1 disabled:opacity-50"
-      >
-        {status === "refreshing" ? "Refreshing…" : "Refresh"}
-      </button>
+      {user && (
+        <button
+          onClick={refresh}
+          disabled={status === "refreshing"}
+          className="mt-2 rounded border px-3 py-1 disabled:opacity-50"
+        >
+          {status === "refreshing" ? "Refreshing…" : "Refresh"}
+        </button>
+      )}
     </div>
   );
 }
