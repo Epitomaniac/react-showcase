@@ -157,7 +157,7 @@ export default function Home() {
               title="Movie Explorer"
               desc={[
                 "Data Fetching",
-                "Managing Race Conditions",
+                "Handling Race Conditions",
                 "Custom Hooks",
                 "Debouncing Inputs",
                 "Derived State",
@@ -176,6 +176,17 @@ export default function Home() {
                 "LocalStorage Persist",
                 "Memoization with useMemo and useCallback",
                 "DOM Manipulation with Refs",
+              ]}
+              dark={isDark}
+            />
+            <MockProject
+              link="/stale-while-revalidate"
+              title="Stale-While-Revalidate"
+              desc={[
+                "Stale-while-revalidate pattern",
+                "Custom Hooks",
+                "LocalStorage Persist",
+                "Handling Race Conditions",
               ]}
               dark={isDark}
             />
