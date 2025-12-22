@@ -185,8 +185,22 @@ export default function Home() {
               desc={[
                 "Stale-while-revalidate pattern",
                 "Custom Hooks",
+                "Data Fetching",
                 "LocalStorage Persist",
                 "Handling Race Conditions",
+              ]}
+              dark={isDark}
+            />
+            <MockProject
+              link="/optimistic-list"
+              title="Optimistic List"
+              desc={[
+                "Optimistic UI Updates",
+                "Revert-on-Failure Logic",
+                "Temporal State",
+                "Async Cancellation",
+                "Handling Race Conditions",
+                "Custom Hooks",
               ]}
               dark={isDark}
             />

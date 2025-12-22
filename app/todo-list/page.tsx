@@ -243,9 +243,11 @@ export default function TodoApp() {
           ))}
         </ul>
       </div>
-      <ShikiHighlighter language="tsx" theme="github-dark">
-        {html}
-      </ShikiHighlighter>
+      {html && (
+        <ShikiHighlighter language="tsx" theme="github-dark">
+          {html}
+        </ShikiHighlighter>
+      )}
     </>
   );
 }

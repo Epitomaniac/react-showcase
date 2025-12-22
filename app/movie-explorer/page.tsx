@@ -276,9 +276,11 @@ export default function MovieList() {
         </div>
       </div>
 
-      <ShikiHighlighter language="tsx" theme="github-dark">
-        {html}
-      </ShikiHighlighter>
+      {html && (
+        <ShikiHighlighter language="tsx" theme="github-dark">
+          {html}
+        </ShikiHighlighter>
+      )}
     </>
   );
 }
