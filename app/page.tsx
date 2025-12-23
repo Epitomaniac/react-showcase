@@ -204,6 +204,17 @@ export default function Home() {
               ]}
               dark={isDark}
             />
+            <MockProject
+              link="/serverside-pagination"
+              title="Serverside Pagination"
+              desc={[
+                "Server-Driven Pagination",
+                "Async request race prevention",
+                "Debouncing Inputs",
+                "Memoization with memo",
+              ]}
+              dark={isDark}
+            />
           </div>
         </section>
 
