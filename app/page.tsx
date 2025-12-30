@@ -117,7 +117,7 @@ export default function Home() {
               <a
                 href="https://chesscanon.com"
                 target="_blank"
-                className="mx-5 decoration-0 cursor-pointer text-blue-400"
+                className="decoration-0 cursor-pointer text-blue-400"
               >
                 {lang === "en" ? "Visit ChessCanon" : "بازدید از چسکنن"}
               </a>
@@ -209,7 +209,7 @@ export default function Home() {
               title="Serverside Pagination"
               desc={[
                 "Server-Driven Pagination",
-                "Async request race prevention",
+                "Async Request Race Handling",
                 "Debouncing Inputs",
                 "Memoization with memo",
               ]}
