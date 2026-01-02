@@ -5,10 +5,8 @@ function LikeButton({ postId, initialLikes }) {
   const [loading, setLoading] = useState(false);
 
   const handleLike = async () => {
-    if (loading) return;
-
+    setLikes(likes + 1);
     setLoading(true);
-    setLikes(prev => prev + 1);
 
     try {
       const res = await fetch(`/api/posts/${postId}/like`, {
@@ -18,8 +16,8 @@ function LikeButton({ postId, initialLikes }) {
       if (!res.ok) {
         throw new Error("Request failed");
       }
-    } catch {
-      setLikes(prev => prev - 1);
+    } catch (e) {
+      setLikes(likes);
     } finally {
       setLoading(false);
     }

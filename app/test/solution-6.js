@@ -19,6 +19,7 @@ function LikeButton({ postId, initialLikes }) {
         throw new Error("Request failed");
       }
     } catch {
+      // Rollback is relative, not absolute
       setLikes(prev => prev - 1);
     } finally {
       setLoading(false);
@@ -26,9 +27,12 @@ function LikeButton({ postId, initialLikes }) {
   };
 
   return (
-    <button onClick={handleLike} disabled={loading}>
-      ❤️ {likes}
-    </button>
+    <>
+      {/* disabled={loading prevent race conditions so abort controller is not necessary */}
+      <button onClick={handleLike} disabled={loading}>
+        ❤️ {likes}
+      </button>
+    </>
   );
 }
 

@@ -25,11 +25,14 @@ function useOptimisticItem(initial: Item) {
   const [item, setItem] = useState(initial);
   const [status, setStatus] = useState<Status>("idle");
   const [undoVisible, setUndoVisible] = useState(false);
+  const committedRef = useRef<Item>(initial);
   const requestIdRef = useRef(0);
   const undoTimerRef = useRef<number | null>(null);
 
   const toggle = () => {
-    const next = { ...item, completed: !item.completed };
+    const prev = item;
+    const next = { ...prev, completed: !prev.completed };
+
     setItem(next);
     setStatus("pending");
     setUndoVisible(true);
@@ -41,13 +44,14 @@ function useOptimisticItem(initial: Item) {
       fakeApi()
         .then(() => {
           if (requestId === requestIdRef.current) {
+            committedRef.current = next;
             setStatus("idle");
             setUndoVisible(false);
           }
         })
         .catch(() => {
           if (requestId === requestIdRef.current) {
-            setItem(item);
+            setItem(committedRef.current);
             setStatus("error");
             setUndoVisible(false);
           }
@@ -62,7 +66,7 @@ function useOptimisticItem(initial: Item) {
     }
 
     requestIdRef.current += 1;
-    setItem(prev => ({ ...prev, completed: !prev.completed }));
+    setItem(committedRef.current);
     setUndoVisible(false);
     setStatus("idle");
   };

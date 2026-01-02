@@ -10,7 +10,7 @@ function Counter() {
     }, 1000);
 
     return () => clearInterval(id);
-  }, []);
+  }, [count]);
 
   return (
     <div>
